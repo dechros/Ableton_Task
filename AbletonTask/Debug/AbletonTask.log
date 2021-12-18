@@ -1,0 +1,6 @@
+﻿  ModuleClass.cpp
+C:\Users\hp\source\repos\AbletonTask\AbletonTask\ModuleClass\ModuleClass.cpp(42,27): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\source\repos\AbletonTask\AbletonTask\ModuleClass\ModuleClass.cpp(50,27): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\source\repos\AbletonTask\AbletonTask\ModuleClass\ModuleClass.cpp(60,27): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\source\repos\AbletonTask\AbletonTask\ModuleClass\ModuleClass.cpp(67,27): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+  AbletonTask.vcxproj -> C:\Users\hp\source\repos\AbletonTask\Debug\AbletonTask.exe
