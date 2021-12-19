@@ -1,6 +1,36 @@
-﻿  ModuleClass.cpp
-C:\Users\hp\source\repos\AbletonTask\AbletonTask\ModuleClass\ModuleClass.cpp(42,27): warning C4018: '<': imzalı/imzasız uyuşmazlığı
-C:\Users\hp\source\repos\AbletonTask\AbletonTask\ModuleClass\ModuleClass.cpp(50,27): warning C4018: '<': imzalı/imzasız uyuşmazlığı
-C:\Users\hp\source\repos\AbletonTask\AbletonTask\ModuleClass\ModuleClass.cpp(60,27): warning C4018: '<': imzalı/imzasız uyuşmazlığı
-C:\Users\hp\source\repos\AbletonTask\AbletonTask\ModuleClass\ModuleClass.cpp(67,27): warning C4018: '<': imzalı/imzasız uyuşmazlığı
-  AbletonTask.vcxproj -> C:\Users\hp\source\repos\AbletonTask\Debug\AbletonTask.exe
+﻿  AbletonTask.cpp
+  MainClass.cpp
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(175,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(177,27): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(181,31): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(192,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(194,27): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(203,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(224,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(248,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(261,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(274,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(282,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(303,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(323,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(332,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(364,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(428,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(440,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(452,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(465,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(485,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(500,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(522,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(536,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(548,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(562,23): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+  ModuleClass.cpp
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\ModuleClass\ModuleClass.cpp(44,27): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\ModuleClass\ModuleClass.cpp(52,27): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\ModuleClass\ModuleClass.cpp(62,27): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\ModuleClass\ModuleClass.cpp(69,27): warning C4018: '<': imzalı/imzasız uyuşmazlığı
+  Kod Üretiliyor...
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(496): warning C4715: 'MainClass::CheckIfFirstModuleIsNewHead': tüm denetim yolları değer döndürmez
+C:\Users\hp\github\Ableton_Task\Ableton_Task\AbletonTask\MainClass\MainClass.cpp(511): warning C4715: 'MainClass::CheckIfSecondModuleIsNewTail': tüm denetim yolları değer döndürmez
+  AbletonTask.vcxproj -> C:\Users\hp\github\Ableton_Task\Ableton_Task\Debug\AbletonTask.exe

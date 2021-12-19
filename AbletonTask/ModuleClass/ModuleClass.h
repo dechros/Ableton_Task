@@ -12,10 +12,15 @@
 #ifndef MODULE_CLASS_H
 #define MODULE_CLASS_H
 
+#include "../Globals/Definitions.h"
+#include "../Globals/Enums.h"
+#include "../Globals/Structs.h"
 #include "../Globals/GlobalVariables.h"
+#include "../Globals/GlobalFunctions.h"
 
 /**
- * @brief Module class represents a module for connecting and altering the inputs.
+ * @brief Module class represents a sound module. This module is 
+ * used for connecting each other and alters its inputs.
  * 
  */
 class ModuleClass
@@ -53,7 +58,7 @@ public:
 	/**
 	 * @brief Does module operations.
 	 * 
-	 * @details Reads inputs, alters it and writes to its connections.
+	 * @details Reads inputs, alters it and writes to output vector.
 	 * 
 	 */
 	void DoModuleOperation();

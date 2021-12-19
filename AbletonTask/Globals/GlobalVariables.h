@@ -17,8 +17,4 @@
 #include <sstream>
 #include <algorithm>
 
-#include "Structs.h"
-
-
-
 #endif

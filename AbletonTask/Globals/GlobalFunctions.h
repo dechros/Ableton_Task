@@ -9,10 +9,7 @@
  * 
  */
 
-#include "GlobalVariables.h"
+#ifndef GLOBAL_FUNCTIONS_H
+#define GLOBAL_FUNCTIONS_H
 
-
-
-std::string AddSplittedInputsTogether(std::vector<std::string> splittedList);
-
-std::vector<std::string> Split(const std::string &s, char delim);
+#endif

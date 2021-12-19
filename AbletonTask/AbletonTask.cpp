@@ -14,6 +14,9 @@
 /**
  * @brief Program entry point.
  * 
+ * @details This program implements the Ableton Task Number 1. Implementation
+ * of the main functions are in Main Class.
+ * 
  * @return int Indicates if program run succesfull or not.
  */
 int main()

@@ -12,8 +12,4 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
-#include <string>
-#include "Enums.h"
-
-
 #endif

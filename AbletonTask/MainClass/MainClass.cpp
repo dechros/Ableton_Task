@@ -24,8 +24,7 @@ MainClass::~MainClass()
 
 void MainClass::Run()
 {
-    cout << "Waiting for commands." << endl;
-
+    PrintWelcomeMessage();
     while (true)
     {
         splittedInputs = ReadAndSplitUserInput();
@@ -44,84 +43,15 @@ void MainClass::Run()
         }
         else
         {
-            cout << "Error input." << endl;
+            PrintInputErrorMessage();
         }
     }
-}
-
-void MainClass::ProcessCommandOperations()
-{
-    if (splittedInputs.size() < 2)
-    {
-        cout << "Input length error." << endl;
-        return;
-    }
-
-    int headIndex = -1;
-    for (int i = 0; i < modules.size(); i++)
-    {
-        if (modules[i].isHead == true)
-        {
-            headIndex = i;
-            break;
-        }
-    }
-
-    for (int i = 1; i < splittedInputs.size(); i++)
-    {
-        modules[headIndex].input.push_back(splittedInputs[i]);
-    }
-
-    modules[headIndex].DoModuleOperation();
-
-    vector<int> currentModuleIndexes;
-    vector<int> nextModuleIndexes;
-    currentModuleIndexes.push_back(headIndex);
-    while (true)
-    {
-        nextModuleIndexes = FindNextModules(currentModuleIndexes);
-        FillNextModulesInputs(currentModuleIndexes);
-
-        for (int i = 0; i < nextModuleIndexes.size(); i++)
-        {
-            modules[nextModuleIndexes[i]].DoModuleOperation();
-        }
-
-        if(nextModuleIndexes.size() == 1)
-        {
-            if(modules[nextModuleIndexes[0]].isTail == true)
-            {
-                for (int i = 0; i < modules[nextModuleIndexes[0]].output.size(); i++)
-                {
-                    cout << modules[nextModuleIndexes[0]].output[i] + " ";
-                }
-                cout << endl;
-                break;
-            }
-        }
-
-        currentModuleIndexes.clear();
-        for (int i = 0; i < nextModuleIndexes.size(); i++)
-        {
-            currentModuleIndexes.push_back(nextModuleIndexes[i]);
-        }
-    }
-
-    for (int i = 0; i < modules.size(); i++)
-    {
-        modules[i].input.clear();
-        modules[i].output.clear();
-    }
-
-    cout << "End of process. " << endl;
-    return;
 }
 
 void MainClass::ModuleCommandOperations()
 {
-    if (splittedInputs.size() < 3)
+    if (CheckModuleCommandInputSize() == false)
     {
-        cout << "Input length error." << endl;
         return;
     }
 
@@ -132,59 +62,115 @@ void MainClass::ModuleCommandOperations()
     if (tempModule.operation != ERROR_OP)
     {
         modules.push_back(tempModule);
-
-        cout << "Module is added." << endl;
-        cout << tempModule.name << endl;
-        cout << tempModule.operation << endl;
+        PrintModuleIsAddedMessage();
     }
     else
     {
-        cout << "Module is not added." << endl;
+        PrintModuleIsNotAddedMessage();
     }
-
     PrintAllModules();
 }
 
-void MainClass::PrintAllModules()
+void MainClass::ConnectCommandOperations()
 {
-    cout << "Available modules: " << endl;
-    for (int i = 0; i < modules.size(); i++)
+    if (CheckConnectCommandInputSize() == false)
     {
-        cout << modules[i].name << endl;
+        return;
     }
-}
 
-operations MainClass::GetOperation(std::string operationstr)
-{
-    if (operationstr == "echo")
+    if (IsFirstModuleFound() == false || IsSecondModuleFound() == false)
     {
-        return (ECHO);
+        PrintModuleIsNotFoundMessage();
+        PrintAllModules();
+        return;
     }
-    else if (operationstr == "reverse")
+
+    bool headIsFound = false;
+    bool tailIsFound = false;
+
+    if (FindTailModule() > 0)
     {
-        return (REVERSE);
+        tailIsFound = true;
     }
-    else if (operationstr == "delay")
+    if (FindHeadModule() > 0)
     {
-        return (DELAY);
+        headIsFound = true;
     }
-    else if (operationstr == "noop")
+
+    if ((headIsFound == false) && (tailIsFound == false)) /* Empty module list, module adding operations. */
     {
-        return (NOOP);
+        AddFirstModuleAndMakeItHead();
+        AddSecondModuleAndMakeItTail();
+        PrintConnectionSuccesfullMessage();
+    }
+    else if ((headIsFound == true) && (tailIsFound == true)) /* Not empty module list, module adding operations. */
+    {
+        bool firstModuleIsHead = CheckIfFirstModuleIsNewHead();
+        bool secondModuleIsTail = CheckIfSecondModuleIsNewTail();
+
+        if (firstModuleIsHead == true)
+        {
+            ConnectFirstModuleAsHead();
+        }
+        else
+        {
+            ConnectFirstModule();
+        }
+        if (secondModuleIsTail == true)
+        {
+            ConnectSecondModuleAsTail();
+        }
+        else
+        {
+            ConnectsecondModule();
+        }
+        PrintConnectionSuccesfullMessage();
     }
     else
     {
-        return (ERROR_OP);
+        PrintHeadAndTailError();
     }
 }
 
-void MainClass::ModuleIsNotFoundMessage()
+void MainClass::ProcessCommandOperations()
 {
-    cout << "Module is not found." << endl;
-    PrintAllModules();
+    if (CheckProcessCommandInputSize() == false)
+    {
+        return;
+    }
+
+    int headIndex = FindHeadModule();
+    FillConsoleInputToTheModule(headIndex);
+    modules[headIndex].DoModuleOperation();
+    currentModuleIndexes.push_back(headIndex);
+
+    while (true)
+    {
+        FindNextModules();
+        FillNextModulesInputs();
+        DoNextModuleOperations();
+        if (IsNextModuleTail() == true)
+        {
+            PrintTailModuleOutput();
+            break;
+        }
+        SwitchNextModulesWithCurrentModules();
+    }
+    ResetModuleListAndInputs();
+    PrintEndOfTheProcessMessage();
 }
 
-void MainClass::FillNextModulesInputs(std::vector<int> currentModuleIndexes) /* 0 */
+bool MainClass::CheckConnectCommandInputSize()
+{
+    if (splittedInputs.size() < 3)
+    {
+        PrintInputErrorMessage();
+        return (false);
+    }
+    return (true);
+}
+
+void MainClass::FillNextModulesInputs()
 {
     for (int i = 0; i < currentModuleIndexes.size(); i++)
     {
@@ -200,10 +186,9 @@ void MainClass::FillNextModulesInputs(std::vector<int> currentModuleIndexes) /* 
     }
 }
 
-vector<int> MainClass::FindNextModules(std::vector<int> currentModuleIndexes)
+void MainClass::FindNextModules()
 {
-    vector<int> nextModuleIndexes;
-
+    nextModuleIndexes.clear();
     for (int i = 0; i < currentModuleIndexes.size(); i++)
     {
         for (int k = 0; k < modules[currentModuleIndexes[i]].outputTo.size(); k++)
@@ -211,8 +196,6 @@ vector<int> MainClass::FindNextModules(std::vector<int> currentModuleIndexes)
             nextModuleIndexes.push_back(GetModuleIndex(modules[currentModuleIndexes[i]].outputTo[k]));
         }
     }
-
-    return nextModuleIndexes;
 }
 
 int MainClass::GetModuleIndex(std::string moduleName)
@@ -224,7 +207,6 @@ int MainClass::GetModuleIndex(std::string moduleName)
             return i;
         }
     }
-
     return -1;
 }
 
@@ -261,187 +243,328 @@ vector<std::string> MainClass::Split(const std::string &s, char delim)
     return result;
 }
 
-void MainClass::ConnectCommandOperations()
+int MainClass::FindTailModule()
 {
-    if (splittedInputs.size() < 3)
-    {
-        cout << "Input length error." << endl;
-        return;
-    }
-
-    bool moduleIsFound = false;
-
-    for (int i = 0; i < modules.size(); i++)
-    {
-        if (modules[i].name == splittedInputs[1])
-        {
-            moduleIsFound = true;
-            break;
-        }
-    }
-
-    if (moduleIsFound == false)
-    {
-        ModuleIsNotFoundMessage();
-        return;
-    }
-
-    moduleIsFound = false;
-    for (int i = 0; i < modules.size(); i++)
-    {
-        if (modules[i].name == splittedInputs[2])
-        {
-            moduleIsFound = true;
-            break;
-        }
-    }
-
-    if (moduleIsFound == false)
-    {
-        ModuleIsNotFoundMessage();
-        return;
-    }
-
-    /* Everything is fine. Connect the module. */
-
-    bool headIsFound = false;
-    bool tailIsFound = false;
-
-    for (int i = 0; i < modules.size(); i++)
-    {
-        if (modules[i].isHead == true)
-        {
-            headIsFound = true;
-            break;
-        }
-    }
-
     for (int i = 0; i < modules.size(); i++)
     {
         if (modules[i].isTail == true)
         {
-            tailIsFound = true;
-            break;
+            return (i);
         }
     }
 
-    if ((headIsFound == false) && (tailIsFound == false))
+    return (-1);
+}
+
+int MainClass::FindHeadModule()
+{
+    for (int i = 0; i < modules.size(); i++)
     {
-        for (int i = 0; i < modules.size(); i++)
+        if (modules[i].isHead == true)
         {
-            if (modules[i].name == splittedInputs[1])
-            {
-                modules[i].isHead = true;
-                modules[i].outputTo.push_back(splittedInputs[2]);
-                break;
-            }
+            return (i);
         }
-
-        for (int i = 0; i < modules.size(); i++)
-        {
-            if (modules[i].name == splittedInputs[2])
-            {
-                modules[i].isTail = true;
-                modules[i].inputFrom.push_back(splittedInputs[1]);
-                break;
-            }
-        }
-
-        cout << "Connection succesfull." << endl;
     }
-    else if ((headIsFound == true) && (tailIsFound == true))
+
+    return (-1);
+}
+
+void MainClass::FillConsoleInputToTheModule(int index)
+{
+    for (int i = 1; i < splittedInputs.size(); i++)
     {
-        bool firstModuleIsHead = false;
-        bool secondModuleIsTail = false;
+        modules[index].input.push_back(splittedInputs[i]);
+    }
+}
 
-        for (int i = 0; i < modules.size(); i++)
+void MainClass::DoNextModuleOperations()
+{
+    for (int i = 0; i < nextModuleIndexes.size(); i++)
+    {
+        modules[nextModuleIndexes[i]].DoModuleOperation();
+    }
+}
+
+bool MainClass::IsNextModuleTail()
+{
+    if (nextModuleIndexes.size() == 1)
+    {
+        if (modules[nextModuleIndexes[0]].isTail == true)
         {
-            if (modules[i].name == splittedInputs[2])
-            {
-                if (modules[i].isHead == true)
-                {
-                    modules[i].isHead = false;
-                    firstModuleIsHead = true;
-                }
-                break;
-            }
+            return (true);
         }
+    }
+    return (false);
+}
 
-        if (firstModuleIsHead == true)
-        {
-            cout << "firstModuleIsHead == true" << endl;
+void MainClass::SwitchNextModulesWithCurrentModules()
+{
+    currentModuleIndexes.clear();
+    for (int i = 0; i < nextModuleIndexes.size(); i++)
+    {
+        currentModuleIndexes.push_back(nextModuleIndexes[i]);
+    }
+}
 
-            for (int i = 0; i < modules.size(); i++)
-            {
-                if (modules[i].name == splittedInputs[1])
-                {
-                    modules[i].isHead = true;
-                    modules[i].inputFrom.clear();
-                    modules[i].outputTo.push_back(splittedInputs[2]);
-                    break;
-                }
-            }
-        }
-        else
-        {
-            cout << "firstModuleIsHead == false" << endl;
+bool MainClass::CheckProcessCommandInputSize()
+{
+    if (splittedInputs.size() < 2)
+    {
+        PrintInputErrorMessage();
+        return false;
+    }
+    return true;
+}
 
-            for (int i = 0; i < modules.size(); i++)
-            {
-                if (modules[i].name == splittedInputs[1])
-                {
-                    modules[i].outputTo.push_back(splittedInputs[2]);
-                    break;
-                }
-            }
-        }
+void MainClass::ResetModuleListAndInputs()
+{
+    currentModuleIndexes.clear();
+    nextModuleIndexes.clear();
+    for (int i = 0; i < modules.size(); i++)
+    {
+        modules[i].input.clear();
+        modules[i].output.clear();
+    }
+}
 
-        for (int i = 0; i < modules.size(); i++)
-        {
-            if (modules[i].name == splittedInputs[1])
-            {
-                if (modules[i].isTail == true)
-                {
-                    modules[i].isTail = false;
-                    secondModuleIsTail = true;
-                }
-                break;
-            }
-        }
+void MainClass::PrintTailModuleOutput()
+{
+    for (int i = 0; i < modules[nextModuleIndexes[0]].output.size(); i++)
+    {
+        cout << modules[nextModuleIndexes[0]].output[i] + " ";
+    }
+    cout << endl;
+}
 
-        if (secondModuleIsTail == true)
-        {
-            cout << "secondModuleIsTail == true" << endl;
+void MainClass::PrintEndOfTheProcessMessage()
+{
+#if (CONSOLE_OUTPUT == ACTIVE)
+    cout << "End of process. " << endl;
+#endif
+}
 
-            for (int i = 0; i < modules.size(); i++)
-            {
-                if (modules[i].name == splittedInputs[2])
-                {
-                    modules[i].isTail = true;
-                    modules[i].outputTo.clear();
-                    modules[i].inputFrom.push_back(splittedInputs[1]);
-                    break;
-                }
-            }
-        }
-        else
-        {
-            cout << "secondModuleIsTail == false" << endl;
+void MainClass::PrintInputErrorMessage()
+{
+#if (CONSOLE_OUTPUT == ACTIVE)
+    cout << "Error input." << endl;
+#endif
+}
 
-            for (int i = 0; i < modules.size(); i++)
-            {
-                if (modules[i].name == splittedInputs[2])
-                {
-                    modules[i].inputFrom.push_back(splittedInputs[1]);
-                    break;
-                }
-            }
-        }
-        cout << "Connection succesfull." << endl;
+void MainClass::PrintWelcomeMessage()
+{
+#if (CONSOLE_OUTPUT == ACTIVE)
+    cout << "Ver: " << VERSION << " Waiting for commands." << endl;
+#endif
+}
+
+void MainClass::PrintAllModules()
+{
+#if (CONSOLE_OUTPUT == ACTIVE)
+    cout << "Available modules: " << endl;
+    for (int i = 0; i < modules.size(); i++)
+    {
+        cout << modules[i].name << endl;
+    }
+#endif
+}
+
+void MainClass::PrintModuleIsNotFoundMessage()
+{
+#if (CONSOLE_OUTPUT == ACTIVE)
+    cout << "Module is not found." << endl;
+#endif
+}
+
+void MainClass::PrintModuleIsAddedMessage()
+{
+#if (CONSOLE_OUTPUT == ACTIVE)
+    cout << "Module is added." << endl;
+#endif
+}
+
+void MainClass::PrintModuleIsNotAddedMessage()
+{
+#if (CONSOLE_OUTPUT == ACTIVE)
+    cout << "Module is not added." << endl;
+#endif
+}
+
+bool MainClass::CheckModuleCommandInputSize()
+{
+    if (splittedInputs.size() < 3)
+    {
+        PrintInputErrorMessage();
+        return false;
+    }
+    return true;
+}
+
+operations MainClass::GetOperation(std::string operationstr)
+{
+    if (operationstr == "echo")
+    {
+        return (ECHO);
+    }
+    else if (operationstr == "reverse")
+    {
+        return (REVERSE);
+    }
+    else if (operationstr == "delay")
+    {
+        return (DELAY);
+    }
+    else if (operationstr == "noop")
+    {
+        return (NOOP);
     }
     else
     {
-        cout << "Head and tail error." << endl;
-        return;
+        return (ERROR_OP);
+    }
+}
+
+bool MainClass::IsFirstModuleFound()
+{
+    for (int i = 0; i < modules.size(); i++)
+    {
+        if (modules[i].name == splittedInputs[1])
+        {
+            return (true);
+        }
+    }
+    return (false);
+}
+
+bool MainClass::IsSecondModuleFound()
+{
+    for (int i = 0; i < modules.size(); i++)
+    {
+        if (modules[i].name == splittedInputs[2])
+        {
+            return (true);
+        }
+    }
+    return (false);
+}
+
+void MainClass::AddFirstModuleAndMakeItHead()
+{
+    for (int i = 0; i < modules.size(); i++)
+    {
+        if (modules[i].name == splittedInputs[1])
+        {
+            modules[i].isHead = true;
+            modules[i].outputTo.push_back(splittedInputs[2]);
+            break;
+        }
+    }
+}
+
+void MainClass::AddSecondModuleAndMakeItTail()
+{
+    for (int i = 0; i < modules.size(); i++)
+    {
+        if (modules[i].name == splittedInputs[2])
+        {
+            modules[i].isTail = true;
+            modules[i].inputFrom.push_back(splittedInputs[1]);
+            break;
+        }
+    }
+}
+
+void MainClass::PrintConnectionSuccesfullMessage()
+{
+#if (CONSOLE_OUTPUT == ACTIVE)
+    cout << "Connection succesfull." << endl;
+#endif
+}
+
+bool MainClass::CheckIfFirstModuleIsNewHead()
+{
+    for (int i = 0; i < modules.size(); i++)
+    {
+        if (modules[i].name == splittedInputs[2])
+        {
+            if (modules[i].isHead == true)
+            {
+                modules[i].isHead = false;
+                return (true);
+            }
+        }
+    }
+}
+
+bool MainClass::CheckIfSecondModuleIsNewTail()
+{
+    for (int i = 0; i < modules.size(); i++)
+    {
+        if (modules[i].name == splittedInputs[1])
+        {
+            if (modules[i].isTail == true)
+            {
+                modules[i].isTail = false;
+                return (true);
+            }
+        }
+    }
+}
+
+void MainClass::PrintHeadAndTailError()
+{
+#if (CONSOLE_OUTPUT == ACTIVE)
+    cout << "Head and tail error." << endl;
+#endif
+}
+
+void MainClass::ConnectFirstModuleAsHead()
+{
+    for (int i = 0; i < modules.size(); i++)
+    {
+        if (modules[i].name == splittedInputs[1])
+        {
+            modules[i].isHead = true;
+            modules[i].inputFrom.clear();
+            modules[i].outputTo.push_back(splittedInputs[2]);
+            return;
+        }
+    }
+}
+
+void MainClass::ConnectFirstModule()
+{
+    for (int i = 0; i < modules.size(); i++)
+    {
+        if (modules[i].name == splittedInputs[1])
+        {
+            modules[i].outputTo.push_back(splittedInputs[2]);
+            return;
+        }
+    }
+}
+
+void MainClass::ConnectSecondModuleAsTail()
+{
+    for (int i = 0; i < modules.size(); i++)
+    {
+        if (modules[i].name == splittedInputs[2])
+        {
+            modules[i].isTail = true;
+            modules[i].outputTo.clear();
+            modules[i].inputFrom.push_back(splittedInputs[1]);
+            return;
+        }
+    }
+}
+
+void MainClass::ConnectsecondModule()
+{
+    for (int i = 0; i < modules.size(); i++)
+    {
+        if (modules[i].name == splittedInputs[2])
+        {
+            modules[i].inputFrom.push_back(splittedInputs[1]);
+            break;
+        }
     }
 }

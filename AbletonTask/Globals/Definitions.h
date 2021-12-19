@@ -14,4 +14,9 @@
 
 #define VERSION "0.0.1"
 
+#define ACTIVE 1
+#define PASSIVE 0
+
+#define CONSOLE_OUTPUT ACTIVE
+
 #endif

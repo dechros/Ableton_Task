@@ -35,7 +35,9 @@ void ModuleClass::DoModuleOperation()
     switch (operation)
     {
     case ERROR_OP:
+#if (CONSOLE_OUTPUT == ACTIVE)
         cout << "Invalid operation." << endl;
+#endif
         break;
 
     case ECHO:
@@ -71,7 +73,9 @@ void ModuleClass::DoModuleOperation()
         break;
 
     default:
+#if (CONSOLE_OUTPUT == ACTIVE)
         cout << "Invalid operation." << endl;
+#endif
         break;
     }
 }

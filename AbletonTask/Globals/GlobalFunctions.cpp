@@ -12,31 +12,3 @@
 #include "GlobalFunctions.h"
 
 using namespace std;
-
-std::string addSplittedInputsTogether(std::vector<std::string> splittedList)
-{
-    string output = "";
-
-    for (int i = 1; i < splittedList.size(); i++)
-    {
-        output += splittedList[i];
-    }
-
-    return output;
-}
-
-
-
-vector<std::string> split(const std::string &s, char delim)
-{
-    vector<string> result;
-    stringstream ss(s);
-    string item;
-
-    while (getline(ss, item, delim))
-    {
-        result.push_back(item);
-    }
-
-    return result;
-}
